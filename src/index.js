@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('Animal Tracker API is running!');
+  res.send('Animal Tracker API is runnin!');
 });
 
 const PORT = process.env.PORT || 3000;
