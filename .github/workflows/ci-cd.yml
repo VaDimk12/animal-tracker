@@ -29,10 +29,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker build -t ghcr.io/${{ github.repository_owner }}/animal-tracker:latest .
-          docker push ghcr.io/${{ github.repository_owner }}/animal-tracker:latest
+          IMAGE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME="ghcr.io/${IMAGE_OWNER}/animal-tracker:latest"
 
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker build -t "$IMAGE_NAME" .
+          docker push "$IMAGE_NAME"
+          
       - name: Notify Slack
         if: always()
         uses: slackapi/slack-github-action@v1.24.0
